@@ -71,7 +71,11 @@ class TFLogFilter:
 
 tf.get_logger().addFilter(TFLogFilter(err_on_deprecation=False))
 
-if version.parse(tf.__version__) < version.parse("2.6.0rc0"):  # pragma: no cover
+if version.parse(tf.__version__) > version.parse("2.6.0"):  # pragma: no cover
+    from tensorflow.python.keras.engine.functional import Functional, _build_map
+    from tensorflow.keras.layers import BatchNormalization as BatchNormalizationV1
+    from tensorflow.keras.layers import BatchNormalization as BatchNormalizationV2
+elif version.parse(tf.__version__) < version.parse("2.6.0rc0"):  # pragma: no cover
     from tensorflow.python.keras.engine.functional import Functional, _build_map
     from tensorflow.python.keras.layers import (
         BatchNormalizationV1,
